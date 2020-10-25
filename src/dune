@@ -4,7 +4,9 @@
  (libraries
    digestif
    index
+   index.unix
    irmin
+   irmin-type
    irmin-pack
    lwt
    lwt.unix
@@ -12,4 +14,4 @@
    tezos-error-monad
    data-encoding
    ocplib-endian
-   fmt))
+   fmt logs logs.fmt))

@@ -46,11 +46,19 @@ module I = struct
     Store.Tree.clear tree;
     subtree
 
-  let tree_hash = function
-    | `Node _ as tree -> `Node (Store.Tree.hash tree)
+(*   let tree_hash = function
+     | `Node _ as tree -> `Node (Store.Tree.hash tree)
+     | `Contents (b, _) -> `Blob (Store.Contents.hash b)
+  *)
+  let tree_hash tr =
+    match Store.Tree.destruct tr with
+    | `Node _ as tree -> `Node (Store.Tree.hash (Store.Tree.v tree))
     | `Contents (b, _) -> `Blob (Store.Contents.hash b)
 
-  let tree_content tree = Store.Tree.find tree []
+  let tree_content tree =
+    Store.Tree.find tree [] >|= fun blob ->
+    Store.Tree.clear tree;
+    blob
 end
 
 let heap_log, statmemprof_log, event_log =
