@@ -6,8 +6,8 @@
    index
    index.unix
    irmin
-   irmin-type
    irmin-pack
+   repr
    lwt
    lwt.unix
    tezos-crypto

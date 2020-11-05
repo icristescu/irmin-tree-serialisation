@@ -115,7 +115,7 @@ module S = struct
   end
 
   module Store =
-    Irmin_pack.Make_ext_layered (Conf) (Irmin.Metadata.None) (Contents)
+    Irmin_pack.Make_ext (Conf) (Irmin.Metadata.None) (Contents)
       (Irmin.Path.String_list)
       (Irmin.Branch.String)
       (Hash)

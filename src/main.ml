@@ -80,12 +80,13 @@ let find_max () =
     index;
   Fmt.epr "max len = %d@." !max
 
+
+let config = Irmin_pack.config ~fresh:false ~readonly:false root
+
 let reconstruct () =
-  Logs.set_level (Some Logs.Debug);
-  Logs.set_reporter (reporter ());
   Printexc.record_backtrace true;
-  let _config = Irmin_pack.config ~fresh:false ~readonly:false root in ()
-  (* Store.reconstruct_index config *)
+  Logs.app (fun l -> l "Reconstruct index");
+  Store.reconstruct_index config
 
 let open_store () =
   Logs.set_level (Some Logs.Debug);
@@ -95,5 +96,8 @@ let open_store () =
   let conf = Irmin_pack.config_layers ~conf ~copy_in_upper:true ~with_lower:true () in
   Store.Repo.v conf >>= fun repo -> Store.Repo.close repo
 
+let migrate () =
+  Logs.app (fun l -> l "Migrating store to v2, this may take a while") ;
+  Store.migrate config
 
-let () = Bench.test ()
+let () = migrate () ; reconstruct ()
